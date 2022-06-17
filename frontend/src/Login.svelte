@@ -1,22 +1,8 @@
 <script>
     import Tailwindcss from './Tailwindcss.svelte';
+    import HelperFunctions, {getCookie} from './HelperFunctions.svelte';
 
     let messages;
-    function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-    }
     const csrftoken = getCookie('csrftoken');
     console.log(csrftoken);
 
@@ -27,35 +13,40 @@
             body: formData,
             redirect: 'follow'
         }).then(response => {
-            if (response.redirected) {
+            if (response.redirected && response.ok) {
                 window.location.href = response.url;
             } else {
-                response.text().then(function(text) {
-                    console.log(text)
-                    var obj = JSON.parse(text);
-                    var newText = "";
-                    for (let i in obj) {
-                        newText += " - " + obj[i] + "<br>";
-                    } 
-                    messages = newText;
-                })
+                if (response.ok) {
+                    response.text().then(function(text) {
+                        console.log(text)
+                        var obj = JSON.parse(text);
+                        var newText = "";
+                        for (let i in obj) {
+                            newText += " - " + obj[i] + "<br>";
+                        } 
+                        messages = newText;
+                    })
+                }
+                else {
+                    if(response.status == 403) {
+                        messages = "Error 403! please check that you have allowed cookies for this site."
+                    }
+                }
             }
         }).catch((error) => {
             messages = error;
         })
     }
-
 </script>
 
 <Tailwindcss />
-
 <section class="text-gray-600 body-font relative h-full">
 	<div class="container px-5 py-24 mx-auto flex flex-wrap items-center">
 		<div class="container px-5 py-24 mx-auto flex">
 			<div class="lg:w-1/3 md:w-1/2 bg-white rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0 relative z-10 shadow-md">
 				<img src= "https://pbs.twimg.com/media/DN9_SfwV4AATQXt.png" alt="Cemex-Go" class="object-scale-down object-center h-24 mt-0 mb-4" >
 				<h2 class="text-gray-900 text-lg mb-1 font-medium title-font text-center">Login</h2>
-				<p class="leading-relaxed mb-5 text-gray-600 text-center">Post-ironic portland shabby chic echo park, banjo fashion axe</p>
+				<p class="leading-relaxed mb-5 text-gray-600 text-center">Login to access the effort prediction tool.</p>
                 {#if messages}
                     <p id="error_messages" class="text-warning text-center leading-relaxed mb-5">{@html messages}</p>
                 {/if}
@@ -72,9 +63,16 @@
 					</div>
 					<input type="hidden" name="next" value="/">
 				</form>
-				<button type="submit" form="sign_in_form" class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Sign in</button>
-				<p class="text-xs text-gray-500 mt-3 text-center">Chicharrones blog helvetica normcore iceland tousled brook viral artisan.</p>
-			</div>
+				<button type="submit" form="sign_in_form" class="text-white bg-[#023185] border-0 py-2 px-8 focus:outline-none hover:bg-[#02215a] rounded text-lg">Sign in</button>
+				<div class="flex flex-wrap mt-4">
+					<div>
+						<a href="http://127.0.0.1:8000/accounts/password_reset/" class="text-blue-600 hover:text-blue-700 focus:text-blue-700 transition duration-200 ease-in-out mt-2">Forgot password?</a>
+                    </div>
+                    <div class="text-end flex-grow">
+						<a href="http://127.0.0.1:8000/admin/" class="text-end text-blue-600 hover:text-blue-700 focus:text-blue-700 transition duration-200 ease-in-out mt-2">Admin site</a>
+					</div>
+				</div>
+            </div>
 		</div>
 	</div>
 </section>

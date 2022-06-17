@@ -15,6 +15,8 @@ module.exports = {
       indigo: colors.indigo,
       yellow: colors.yellow,
       'warning': '#ef4444',
+      'cemex-red': '#E3303D',
+      'cemex-blue': '#023185',
     },
   },
   variants: {

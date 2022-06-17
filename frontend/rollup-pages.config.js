@@ -16,8 +16,43 @@ const inputs = [
     css: "bundle_history.css",
   }, //string defaults to input: src/[name].js and output: public/build/[name].js
   {
+    input: "src/account.js",
+    output: { file: "../myapp/static/frontend/bundle_account.js", name: "account"},
+    css: "bundle_account.css",
+  },
+  {
+    input: "src/password_change.js",
+    output: { file: "../myapp/static/frontend/bundle_password_change.js", name: "password_change"},
+    css: "bundle_password_change.css",
+  },
+  {
+    input: "src/password_change_done.js",
+    output: { file: "../myapp/static/frontend/bundle_password_change_done.js", name: "password_change_done"},
+    css: "bundle_password_change_done.css",
+  },
+  {
+    input: "src/password_reset.js",
+    output: { file: "../myapp/static/frontend/bundle_password_reset.js", name: "password_reset"},
+    css: "bundle_password_reset.css",
+  },
+  {
+    input: "src/password_reset_done.js",
+    output: { file: "../myapp/static/frontend/bundle_password_reset_done.js", name: "password_reset_done"},
+    css: "bundle_password_reset_done.css",
+  },
+  {
+    input: "src/reset_set_password.js",
+    output: { file: "../myapp/static/frontend/bundle_reset_set_password.js", name: "reset_set_password"},
+    css: "bundle_reset_set_password.css",
+  },
+  {
+    input: "src/reset_password_complete.js",
+    output: { file: "../myapp/static/frontend/bundle_reset_password_complete.js", name: "reset_password_complete"},
+    css: "bundle_reset_password_complete.css",
+  },
+  {
     input: "src/login.js",
-    output: { file: "../myapp/static/frontend/bundle_login.js", name: "login" },
+    output: { file: "../myapp/static/frontend/bundle_login.js", name: "login"},
     css: "bundle_login.css",
   }, //object for setting more specific values for input and output of roolup configuration
 ];
